@@ -6,23 +6,23 @@ namespace Arkanoid.Source.Abstract
 {
     public abstract class Sprite
     {
-        protected readonly Texture2D _texture;
+        protected Texture2D texture;
 
         public Sprite(Texture2D texture)
         {
-            this._texture = texture;
+            this.texture = texture;
         }
 
         public Vector2 Position { get; set; }
 
         public int Width
         {
-            get => this._texture.Width;
+            get => texture.Width;
         }
 
         public int Height
         {
-            get => this._texture.Height;
+            get => texture.Height;
         }
 
         public virtual void Update()
@@ -49,7 +49,7 @@ namespace Arkanoid.Source.Abstract
 
         public virtual void Draw(SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(this._texture, Position, Color.White);
+            spriteBatch.Draw(texture, Position, Color.White);
         }
     }
 }

@@ -17,6 +17,7 @@ namespace Arkanoid.Source.Models
         private readonly Ball _ball;
         private readonly Paddle _paddle;
         private readonly BlockField _blockField;
+        private readonly ScoreManager _scoreManager;
 
         #region velocities
 
@@ -28,33 +29,35 @@ namespace Arkanoid.Source.Models
         public GameField(Rectangle box, ContentManager contentManager) 
             : base(box)
         {
+            _scoreManager = new ScoreManager();
+
             var paddleTexture = contentManager.Load<Texture2D>("Models/Paddle");
-            this._paddle = new Paddle(
+            _paddle = new Paddle(
                 paddleTexture,
                 new Vector2(
-                    this.Box.Width / 2 - paddleTexture.Width / 2,
-                    this.Box.Height - paddleTexture.Height
+                    Box.Width / 2 - paddleTexture.Width / 2,
+                    Box.Height - paddleTexture.Height
                 ),
-                this._paddleVelocity
+                _paddleVelocity
             );
 
             var ballTexture = contentManager.Load<Texture2D>("Models/Ball");
-            this._ball = new Ball(
+            _ball = new Ball(
                 ballTexture,
                 new Vector2(
-                    this.Box.Width / 2 - ballTexture.Width / 2,
-                    this.Box.Height - ballTexture.Height - paddleTexture.Height
+                    Box.Width / 2 - ballTexture.Width / 2,
+                    Box.Height - ballTexture.Height - paddleTexture.Height
                 ),
-                this._ballVelocity
+                _ballVelocity
             );
 
             var blockTexture = contentManager.Load<Texture2D>("Models/Block");
-            this._blockField = new BlockField(
+            _blockField = new BlockField(
                 new Rectangle(
-                    this.Box.X,
-                    this.Box.Y,
-                    this.Box.Width,
-                    this.Box.Height * 2 / 3
+                    Box.X,
+                    Box.Y,
+                    Box.Width,
+                    Box.Height * 2 / 3
                 ),
                 new Block(blockTexture)
             );
@@ -62,9 +65,9 @@ namespace Arkanoid.Source.Models
 
         public override void Draw(SpriteBatch spriteBatch)
         {
-            this._ball.Draw(spriteBatch);
-            this._paddle.Draw(spriteBatch);
-            this._blockField.Draw(spriteBatch);
+            _ball.Draw(spriteBatch);
+            _paddle.Draw(spriteBatch);
+            _blockField.Draw(spriteBatch);
         }
 
         public override void Update()

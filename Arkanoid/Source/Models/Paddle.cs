@@ -14,6 +14,7 @@ namespace Arkanoid.Source.Models
         public Paddle(Texture2D texture, Vector2 startPosition, Vector2 velocity) 
             : base(texture, startPosition, velocity)
         {
+
         }
     }
 }

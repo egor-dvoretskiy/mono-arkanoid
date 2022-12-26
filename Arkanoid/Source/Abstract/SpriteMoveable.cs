@@ -13,9 +13,9 @@ namespace Arkanoid.Source.Abstract
         protected SpriteMoveable(Texture2D texture, Vector2 startPosition, Vector2 velocity) 
             : base(texture)
         {
-            this.StartPosition = startPosition;
-            this.Velocity = velocity;
-            this.ResetPosition();
+            StartPosition = startPosition;
+            Velocity = velocity;
+            ResetPosition();
         }
 
         public Vector2 StartPosition { get; init; }
@@ -24,7 +24,7 @@ namespace Arkanoid.Source.Abstract
 
         public void ResetPosition()
         {
-            this.Position = this.StartPosition;
+            Position = StartPosition;
         }
     }
 }

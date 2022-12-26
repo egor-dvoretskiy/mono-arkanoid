@@ -21,34 +21,34 @@ namespace Arkanoid.Source.Models
         public BlockField(Rectangle outsideBox, Block block) 
             : base(outsideBox)
         {
-            this.Box = outsideBox;
-            this.blocks = new List<Block>();
+            Box = outsideBox;
+            blocks = new List<Block>();
 
-            int amountOfBlocksColumns = this.ClarifyBlockAmount(outsideBox.Width, block.Width, this.BlockSpacing.X);
-            int amountOfBlocksRows = this.ClarifyBlockAmount(outsideBox.Height / 2, block.Height, this.BlockSpacing.Y);
+            int amountOfBlocksColumns = ClarifyBlockAmount(outsideBox.Width, block.Width, this.BlockSpacing.X);
+            int amountOfBlocksRows = ClarifyBlockAmount(outsideBox.Height / 2, block.Height, this.BlockSpacing.Y);
 
-            this._blocksDrawOffset = new Vector2(
-                this.CalculateOffset(amountOfBlocksColumns, block.Width, this.BlockSpacing.X, outsideBox.Width),
-                this.CalculateOffset(amountOfBlocksRows, block.Height, this.BlockSpacing.Y, outsideBox.Height / 2)
+            _blocksDrawOffset = new Vector2(
+                CalculateOffset(amountOfBlocksColumns, block.Width, BlockSpacing.X, outsideBox.Width),
+                CalculateOffset(amountOfBlocksRows, block.Height, BlockSpacing.Y, outsideBox.Height / 2)
             );
 
-            this.FillBlocksList(amountOfBlocksRows, amountOfBlocksColumns, block);
+            FillBlocksList(amountOfBlocksRows, amountOfBlocksColumns, block);
         }
 
         public Vector2 BlockSpacing
         {
-            get => this.blockSpacing;
+            get => blockSpacing;
             set
             {
-                this.blockSpacing = value;
+                blockSpacing = value;
             }
         }
 
         public override void Draw(SpriteBatch spriteBatch)
         {
-            for (int i = 0; i < this.blocks.Count; i++)
+            for (int i = 0; i < blocks.Count; i++)
             {
-                this.blocks[i].Draw(spriteBatch);
+                blocks[i].Draw(spriteBatch);
             }
         }
 
@@ -70,7 +70,7 @@ namespace Arkanoid.Source.Models
 
         private void FillBlocksList(int yamount, int xamount, Block block)
         {
-            if (this.blocks is null || this.blocks.Count == 0) 
+            if (blocks is null || blocks.Count == 0) 
                 return;
 
             for (int i = 0; i < yamount; i++)
@@ -78,11 +78,11 @@ namespace Arkanoid.Source.Models
                 for (int j = 0; j < xamount; j++)
                 {
                     block.Position = new Vector2(
-                        this._blocksDrawOffset.X + j * (block.Width + this.BlockSpacing.X),
-                        this._blocksDrawOffset.Y + i * (block.Height + this.BlockSpacing.Y)
+                        _blocksDrawOffset.X + j * (block.Width + BlockSpacing.X),
+                        _blocksDrawOffset.Y + i * (block.Height + BlockSpacing.Y)
                     );
 
-                    this.blocks.Add(block);
+                    blocks.Add(block);
                 }
             }
         }

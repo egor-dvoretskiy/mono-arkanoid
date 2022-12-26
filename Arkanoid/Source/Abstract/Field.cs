@@ -12,11 +12,9 @@ namespace Arkanoid.Source.Abstract
 {
     public abstract class Field
     {
-        private readonly Rectangle _box;
-
         public Field(Rectangle box)
         {
-            this.Box = box;
+            Box = box;
         }
 
         public Rectangle Box { get; init; }
