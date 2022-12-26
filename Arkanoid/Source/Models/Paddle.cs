@@ -9,9 +9,9 @@ using System.Threading.Tasks;
 
 namespace Arkanoid.Source.Models
 {
-    public class Ball : SpriteMoveable
+    public class Paddle : SpriteMoveable
     {
-        public Ball(Texture2D texture, Vector2 startPosition, Vector2 velocity) 
+        public Paddle(Texture2D texture, Vector2 startPosition, Vector2 velocity) 
             : base(texture, startPosition, velocity)
         {
         }

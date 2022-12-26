@@ -6,17 +6,14 @@ namespace Arkanoid.Source.Abstract
 {
     public abstract class Sprite
     {
-        private readonly Texture2D _texture;
+        protected readonly Texture2D _texture;
 
-        public Sprite(Texture2D texture, Vector2 startPosition)
+        public Sprite(Texture2D texture)
         {
             this._texture = texture;
-            this.StartPosition = startPosition;
         }
 
         public Vector2 Position { get; set; }
-
-        public Vector2 StartPosition { get; init; }
 
         public int Width
         {
@@ -53,11 +50,6 @@ namespace Arkanoid.Source.Abstract
         public virtual void Draw(SpriteBatch spriteBatch)
         {
             spriteBatch.Draw(this._texture, Position, Color.White);
-        }
-
-        public void ResetPosition()
-        {
-            this.Position = this.StartPosition;
         }
     }
 }
