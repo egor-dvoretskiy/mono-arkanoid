@@ -8,9 +8,10 @@ namespace Arkanoid.Source.Abstract
     {
         protected Texture2D texture;
 
-        public Sprite(Texture2D texture)
+        public Sprite(Texture2D texture, Vector2 position)
         {
             this.texture = texture;
+            this.Position = position;
         }
 
         public Vector2 Position { get; set; }

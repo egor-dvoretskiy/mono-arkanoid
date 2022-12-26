@@ -11,7 +11,7 @@ namespace Arkanoid.Source.Abstract
     public abstract class SpriteMoveable : Sprite
     {
         protected SpriteMoveable(Texture2D texture, Vector2 startPosition, Vector2 velocity) 
-            : base(texture)
+            : base(texture, startPosition)
         {
             StartPosition = startPosition;
             Velocity = velocity;

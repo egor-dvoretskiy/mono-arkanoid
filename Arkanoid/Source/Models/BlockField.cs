@@ -15,12 +15,14 @@ namespace Arkanoid.Source.Models
     {
         private readonly List<Block> blocks;
         private readonly Vector2 _blocksDrawOffset;
+        private readonly Texture2D blockTexture;
 
         private Vector2 blockSpacing = new Vector2(16, 10);
 
-        public BlockField(Rectangle outsideBox, Block block) 
+        public BlockField(Rectangle outsideBox, Block block, Texture2D blockTexture) 
             : base(outsideBox)
         {
+            this.blockTexture = blockTexture;
             Box = outsideBox;
             blocks = new List<Block>();
 
@@ -70,19 +72,24 @@ namespace Arkanoid.Source.Models
 
         private void FillBlocksList(int yamount, int xamount, Block block)
         {
-            if (blocks is null || blocks.Count == 0) 
+            if (blocks is null) 
                 return;
 
             for (int i = 0; i < yamount; i++)
             {
                 for (int j = 0; j < xamount; j++)
                 {
-                    block.Position = new Vector2(
+                    /*block.Position = new Vector2(
+                        _blocksDrawOffset.X + j * (block.Width + BlockSpacing.X),
+                        _blocksDrawOffset.Y + i * (block.Height + BlockSpacing.Y)
+                    );*/
+                    var position = new Vector2(
                         _blocksDrawOffset.X + j * (block.Width + BlockSpacing.X),
                         _blocksDrawOffset.Y + i * (block.Height + BlockSpacing.Y)
                     );
 
-                    blocks.Add(block);
+                    //blocks.Add(block);
+                    blocks.Add(new Block(blockTexture, position));
                 }
             }
         }

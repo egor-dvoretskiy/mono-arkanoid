@@ -1,4 +1,5 @@
 ﻿using Arkanoid.Source.Abstract;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
@@ -10,8 +11,8 @@ namespace Arkanoid.Source.Models
 {
     public class Block : Sprite
     {
-        public Block(Texture2D texture) 
-            : base(texture)
+        public Block(Texture2D texture, Vector2 position) 
+            : base(texture, position)
         {
         }
     }

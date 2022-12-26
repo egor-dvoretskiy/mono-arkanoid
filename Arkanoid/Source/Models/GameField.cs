@@ -17,6 +17,7 @@ namespace Arkanoid.Source.Models
         private readonly Ball _ball;
         private readonly Paddle _paddle;
         private readonly BlockField _blockField;
+        private readonly Arrow _arrow;
         private readonly ScoreManager _scoreManager;
 
         #region velocities
@@ -59,7 +60,17 @@ namespace Arkanoid.Source.Models
                     Box.Width,
                     Box.Height * 2 / 3
                 ),
-                new Block(blockTexture)
+                new Block(blockTexture, new System.Numerics.Vector2(0, 0)),
+                blockTexture
+            );
+
+            var arrowTexture = contentManager.Load<Texture2D>("Models/Arrow");
+            _arrow = new Arrow(
+                arrowTexture,
+                new Vector2(
+                    Box.Width / 2 - arrowTexture.Width / 2,
+                    Box.Height - arrowTexture.Height - paddleTexture.Height - ballTexture.Height / 2
+                )
             );
         }
 
@@ -68,6 +79,7 @@ namespace Arkanoid.Source.Models
             _ball.Draw(spriteBatch);
             _paddle.Draw(spriteBatch);
             _blockField.Draw(spriteBatch);
+            _arrow.Draw(spriteBatch);
         }
 
         public override void Update()

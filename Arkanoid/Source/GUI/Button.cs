@@ -19,8 +19,13 @@ namespace Arkanoid.Source.GUI
         private MouseState currentMouseState;
         private MouseState previousMouseState;
 
-        public Button(Texture2D texture, Texture2DPackStates textureStates, SpriteFont spriteFont, string innerContent)
-            : base(texture)
+        private bool isHovering;
+        private bool isPressed;
+
+        public event EventHandler Click;
+
+        public Button(Texture2D texture, Vector2 position, Texture2DPackStates textureStates, SpriteFont spriteFont, string innerContent)
+            : base(texture, position)
         {
             _textureStates = textureStates;
             _font = spriteFont;
@@ -35,6 +40,8 @@ namespace Arkanoid.Source.GUI
 
         public override void Draw(SpriteBatch spriteBatch)
         {
+            texture = GetTextureDueToMouseState();
+
             spriteBatch.Draw(
                 texture, 
                 Position,
@@ -45,11 +52,62 @@ namespace Arkanoid.Source.GUI
                 _font,
                 InnerContent,
                 new Vector2(
-                    Position.X + (Width - InnerContentBoxSize.X / 2),
-                    Position.Y + (Height - InnerContentBoxSize.Y / 2)
+                    Position.X + (Width - InnerContentBoxSize.X) / 2,
+                    Position.Y + (Height - InnerContentBoxSize.Y) / 2
                 ),
                 Color.Black
             );
+        }
+
+        public override void Update()
+        {
+            previousMouseState = this.currentMouseState;
+            currentMouseState = Mouse.GetState();
+
+            var mouseRectangle = new Rectangle(
+                this.currentMouseState.X,
+                this.currentMouseState.Y,
+                1,
+                1
+            );
+
+            if (this.IsBoundsCrossed(mouseRectangle, Position))
+            {
+                this.isHovering = true;
+
+                if (this.currentMouseState.LeftButton == ButtonState.Pressed)
+                    this.isPressed = true;
+
+                if (this.currentMouseState.LeftButton == ButtonState.Released && this.previousMouseState.LeftButton == ButtonState.Pressed)
+                {
+                    this.Click?.Invoke(this, new EventArgs());
+                    this.isPressed = false;
+                }
+            }
+            else
+            {
+                this.isHovering = false;
+                this.isPressed = false;
+            }
+        }
+
+        private bool IsBoundsCrossed(Rectangle mouseRectangle, Vector2 position)
+        {
+            return mouseRectangle.X >= position.X &&
+                mouseRectangle.X <= position.X + Width &&
+                mouseRectangle.Y >= position.Y &&
+                mouseRectangle.Y <= position.Y + Height;
+        }
+
+        private Texture2D GetTextureDueToMouseState()
+        {
+            if (isPressed)
+                return _textureStates.Pressed;
+
+            if (isHovering)
+                return _textureStates.Hover;
+
+            return _textureStates.Simple;
         }
     }
 }
