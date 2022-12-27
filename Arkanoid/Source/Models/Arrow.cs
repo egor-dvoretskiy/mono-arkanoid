@@ -1,4 +1,5 @@
 ﻿using Arkanoid.Source.Abstract;
+using Arkanoid.Source.Enums;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
@@ -12,55 +13,76 @@ namespace Arkanoid.Source.Models
 {
     public class Arrow : Sprite
     {
-        private readonly Rectangle _outsideBox;
+        private readonly float _angleBound = 80;
+        private readonly Point _vectorDirectionOrigin;
 
-        public Arrow(Texture2D texture, Vector2 position, Rectangle outsideBox) 
+        private DirectionSpread directionSpread = DirectionSpread.Uprise;
+        private float angle;
+
+        public Arrow(Texture2D texture, Vector2 position) 
             : base(texture, position)
         {
-            this._outsideBox = outsideBox;
-        }
+            angle = -_angleBound;
 
-        public float Angle { get; set; }
-
-        public void DrawString(SpriteFont font, SpriteBatch spriteBatch)
-        {
-            spriteBatch.DrawString(
-                font,
-                Angle.ToString("f0"),
-                new Vector2(220, 0),
-                Color.Pink
+            _vectorDirectionOrigin = new Point(
+                (int)position.X,
+                (int)position.Y + Height
             );
         }
 
-        /*public override void Draw(SpriteBatch spriteBatch)
+        public override void Draw(SpriteBatch spriteBatch)
         {
-            *//*spriteBatch.Draw(
+            spriteBatch.Draw(
                 texture,
-                new Rectangle(0, 0, 0, 0),
+                new Rectangle(
+                    (int)Position.X + Width / 2,
+                    (int)Position.Y + Height, 
+                    Width, 
+                    Height
+                ),
                 null,
                 Color.White,
-                Angle,
-                new Vector2(0, 0),
+                MathHelper.ToRadians(angle),
+                new Vector2(Width / 2f, Height),
                 SpriteEffects.None,
                 0
-            );*//*
-        }*/
-
-        public override void Update()
-        {
-            EstimateAngle();            
+            );
         }
 
-        private void EstimateAngle()
+        public override void Update()
+        {          
+            UpdateDirectionSpread();
+            UpdateAngle();
+        }
+
+        private void UpdateAngle()
         {
-            var mouseState = Mouse.GetState();
+            if (directionSpread == DirectionSpread.Uprise)
+            {
+                angle++;
+                return;
+            }
 
-            var numerator = Position.X * mouseState.X + Position.Y * mouseState.Y;
-            var denominator = Math.Sqrt(Math.Pow(Position.X, 2) + Math.Pow(Position.X, 2)) * Math.Sqrt(Math.Pow(mouseState.X, 2) + Math.Pow(mouseState.X, 2));
+            if (directionSpread == DirectionSpread.Downrise)
+            {
+                angle--;
+                return;
+            }
+        }
 
-            var angle = Math.Acos(numerator / denominator);
+        private void UpdateDirectionSpread()
+        {
+            if (angle >= _angleBound)
+            {
+                directionSpread = DirectionSpread.Downrise;
+                return;
+            }
 
-            Angle = (float)angle;
+            if (angle <= -_angleBound)
+            {
+                directionSpread = DirectionSpread.Uprise;
+                return;
+            }
         }
     }
 }

@@ -3,6 +3,7 @@ using Arkanoid.Source.Models;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using System;
 
 namespace Arkanoid
 {
@@ -22,6 +23,9 @@ namespace Arkanoid
             Content.RootDirectory = "Content";
             IsMouseVisible = true;
             Window.AllowUserResizing = false;
+
+            this.IsFixedTimeStep = true;
+            this.TargetElapsedTime = TimeSpan.FromSeconds(1 / 60.0f);
         }
 
         protected override void Initialize()

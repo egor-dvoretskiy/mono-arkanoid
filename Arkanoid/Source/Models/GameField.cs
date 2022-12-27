@@ -73,8 +73,7 @@ namespace Arkanoid.Source.Models
                 new Vector2(
                     Box.Width / 2 - arrowTexture.Width / 2,
                     Box.Height - arrowTexture.Height - paddleTexture.Height - ballTexture.Height / 2
-                ),
-                Box
+                )
             );
         }
 
@@ -84,7 +83,6 @@ namespace Arkanoid.Source.Models
             _paddle.Draw(spriteBatch);
             _blockField.Draw(spriteBatch);
             _arrow.Draw(spriteBatch);
-            _arrow.DrawString(_contentManager.Load<SpriteFont>("Fonts/ButtonFont"), spriteBatch);
         }
 
         public override void Update()
