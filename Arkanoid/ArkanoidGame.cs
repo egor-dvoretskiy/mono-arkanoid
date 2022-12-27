@@ -75,6 +75,7 @@ namespace Arkanoid
                 case Source.Enums.GameState.ChooseDirection:
                     {
                         backgroundColor = Color.Black;
+                        gameField.Update();
                     }
                     break;
                 default:
