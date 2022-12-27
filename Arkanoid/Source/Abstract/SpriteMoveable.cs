@@ -20,7 +20,7 @@ namespace Arkanoid.Source.Abstract
 
         public Vector2 StartPosition { get; init; }
 
-        public Vector2 Velocity { get; init; }
+        public Vector2 Velocity { get; set; }
 
         public void ResetPosition()
         {

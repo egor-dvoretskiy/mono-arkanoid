@@ -14,7 +14,6 @@ namespace Arkanoid.Source.Models
     public class Arrow : Sprite
     {
         private readonly float _angleBound = 80;
-        private readonly Point _vectorDirectionOrigin;
 
         private DirectionSpread directionSpread = DirectionSpread.Uprise;
         private float angle;
@@ -23,11 +22,11 @@ namespace Arkanoid.Source.Models
             : base(texture, position)
         {
             angle = -_angleBound;
+        }
 
-            _vectorDirectionOrigin = new Point(
-                (int)position.X,
-                (int)position.Y + Height
-            );
+        public float Angle
+        {
+            get => angle;
         }
 
         public override void Draw(SpriteBatch spriteBatch)

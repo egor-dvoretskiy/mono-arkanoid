@@ -1,4 +1,5 @@
-﻿using Arkanoid.Source.GUI;
+﻿using Arkanoid.Source.Enums;
+using Arkanoid.Source.GUI;
 using Arkanoid.Source.Models;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -50,7 +51,7 @@ namespace Arkanoid
 
             #region game field
 
-            gameField = new GameField(Window.ClientBounds, Content);
+            gameField = new GameField(Window.ClientBounds, Content, stateMachine);
 
             #endregion
 
@@ -76,7 +77,8 @@ namespace Arkanoid
                         mainMenu.Update();
                     }
                     break;
-                case Source.Enums.GameState.ChooseDirection:
+                case GameState.ChooseDirection:
+                case GameState.Play:
                     {
                         backgroundColor = Color.Black;
                         gameField.Update();
@@ -103,6 +105,7 @@ namespace Arkanoid
                     }
                     break;
                 case Source.Enums.GameState.ChooseDirection:
+                case Source.Enums.GameState.Play:
                     {
                         gameField.Draw(spriteBatch);
                     }
