@@ -128,5 +128,10 @@ namespace Arkanoid.Source.Models
                 _stateMachine.ProceedNextStage();
             }
         }
+
+        private void ProceedBallBordersCollision()
+        {
+
+        }
     }
 }
