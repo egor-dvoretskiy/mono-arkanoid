@@ -49,7 +49,8 @@ namespace Arkanoid.Source.Models
                     Box.Width / 2 - paddleTexture.Width / 2,
                     Box.Height - paddleTexture.Height
                 ),
-                _paddleVelocity
+                _paddleVelocity,
+                Box
             );
 
             var ballTexture = contentManager.Load<Texture2D>("Models/Ball");
@@ -59,7 +60,8 @@ namespace Arkanoid.Source.Models
                     Box.Width / 2 - ballTexture.Width / 2,
                     Box.Height - ballTexture.Height - paddleTexture.Height
                 ),
-                new Vector2(0f, 0f)
+                new Vector2(0f, 0f),
+                Box
             );
 
             var blockTexture = contentManager.Load<Texture2D>("Models/Block");
@@ -111,10 +113,12 @@ namespace Arkanoid.Source.Models
         public override void Update()
         {
             ProceedMouse();
+            PaddleMove();
 
             _arrow.Update();
             _ball.DirectionAngle = _arrow.Angle;
             _ball.Update();
+            _paddle.CollisionCheck(_ball);
         }
 
         private void ProceedMouse()
@@ -129,9 +133,9 @@ namespace Arkanoid.Source.Models
             }
         }
 
-        private void ProceedBallBordersCollision()
+        private void PaddleMove()
         {
-
+            _paddle.Move(currentMouseState.X - previouseMouseState.X);
         }
     }
 }

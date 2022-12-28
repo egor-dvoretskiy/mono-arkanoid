@@ -21,6 +21,7 @@ namespace Arkanoid
         public ArkanoidGame()
         {
             graphics = new GraphicsDeviceManager(this);
+
             Content.RootDirectory = "Content";
             IsMouseVisible = true;
             Window.AllowUserResizing = false;
@@ -32,6 +33,10 @@ namespace Arkanoid
         protected override void Initialize()
         {
             stateMachine = new StateMachine();
+
+            graphics.PreferredBackBufferWidth = 640;
+            graphics.PreferredBackBufferHeight = 640;
+            graphics.ApplyChanges();
 
             #region main menu
 
@@ -51,7 +56,7 @@ namespace Arkanoid
 
             #region game field
 
-            gameField = new GameField(Window.ClientBounds, Content, stateMachine);
+            gameField = new GameField(new Rectangle(0,0,Window.ClientBounds.Width, Window.ClientBounds.Height), Content, stateMachine);
 
             #endregion
 

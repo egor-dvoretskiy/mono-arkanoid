@@ -21,9 +21,12 @@ namespace Arkanoid.Source.Models
             : base(texture, startPosition, velocity)
         {
             _outerBox = outerBox;
+            IsBelowBottom = false;
         }
 
-        public float DirectionAngle { get; set; }
+        public int DirectionAngle { get; set; }
+
+        public bool IsBelowBottom { get; private set; }
 
         public bool IsVelocityRequiresEstimation
         {
@@ -39,8 +42,10 @@ namespace Arkanoid.Source.Models
             if (isVelocityRequiresEstimation)
                 EstimateVelocity();
 
-            ProceedBallBordersCollision();
-            UpdateVelocity();
+            if (!IsProceedBallBordersCollision())
+            {
+                UpdateVelocity();
+            }
         }
 
         public void ReverseVelocity(bool x = false, bool y = false)
@@ -56,13 +61,22 @@ namespace Arkanoid.Source.Models
             Velocity = vel;
         }
 
+        public void SetPosition(Vector2 updPosition)
+        {
+            Position = updPosition;
+        }
+
         private void EstimateVelocity()
         {
-            var alpha = 90 - Math.Abs(DirectionAngle);
-            var xvelocity = Height * Math.Cos(alpha);
-            var yvelocity = Height * Math.Cos(90 - alpha);
+            float absAngle = Math.Abs(DirectionAngle);
 
-            Velocity = new Vector2((float)xvelocity, (float)yvelocity);
+            var cosx = DirectionAngle < 0 ? Math.Cos(90 - absAngle) : Math.Cos(absAngle);
+            var cosy = DirectionAngle < 0 ? Math.Cos(absAngle) : Math.Cos(90 - absAngle);
+            
+            var xvelocity = Math.Abs(Height * cosx) * (DirectionAngle < 0 ? -1 : 1);
+            var yvelocity = -Math.Abs(Height * cosy);
+
+            Velocity = new Vector2((float)xvelocity * 0.3f, (float)yvelocity * 0.3f);
 
             Debug.Print($"x: {Velocity.X}, y: {Velocity.Y}");
 
@@ -74,36 +88,36 @@ namespace Arkanoid.Source.Models
             Position += Velocity;
         }
 
-        private void SetPosition()
-        {
-
-        }
-
-        private void ProceedBallBordersCollision()
+        private bool IsProceedBallBordersCollision()
         {
             if (IsBallHasCollisionWithLeftBorder())
             {
+                //Position -= FindDeltaLeft();
                 ReverseVelocity(x: true);
-                return;
+                return true;
             }
 
             if (IsBallHasCollisionWithUpperBorder())
             {
+                //Position -= FindDeltaTop();
                 ReverseVelocity(y: true);
-                return;
+                return true;
             }
 
             if (IsBallHasCollisionWithRightBorder())
             {
+                //Position -= FindDeltaRight();
                 ReverseVelocity(x: true);
-                return;
+                return true;
             }
 
             if (IsBallHasCollisionWithBottomBorder())
             {
-                // game over
-                return;
+                IsBelowBottom = true;
+                return true;
             }
+
+            return false;
         }
 
         private bool IsBallHasCollisionWithLeftBorder()
@@ -128,6 +142,27 @@ namespace Arkanoid.Source.Models
         {
             return Velocity.Y > 0 &&
                 Position.Y + Velocity.Y > _outerBox.Y + _outerBox.Height;
+        }
+
+        private Vector2 FindDeltaLeft()
+        {
+            float delta = Position.X - _outerBox.X;
+
+            return new Vector2(delta, delta);
+        }
+
+        private Vector2 FindDeltaTop()
+        {
+            float delta =  _outerBox.Y - Position.Y;
+
+            return new Vector2(delta, delta);
+        }
+
+        private Vector2 FindDeltaRight()
+        {
+            float delta = _outerBox.Width - Position.X;
+
+            return new Vector2(delta, delta);
         }
     }
 }

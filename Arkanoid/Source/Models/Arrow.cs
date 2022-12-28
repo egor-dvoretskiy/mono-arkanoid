@@ -13,10 +13,10 @@ namespace Arkanoid.Source.Models
 {
     public class Arrow : Sprite
     {
-        private readonly float _angleBound = 80;
+        private readonly int _angleBound = 80;
 
         private DirectionSpread directionSpread = DirectionSpread.Uprise;
-        private float angle;
+        private int angle;
 
         public Arrow(Texture2D texture, Vector2 position) 
             : base(texture, position)
@@ -24,7 +24,7 @@ namespace Arkanoid.Source.Models
             angle = -_angleBound;
         }
 
-        public float Angle
+        public int Angle
         {
             get => angle;
         }
