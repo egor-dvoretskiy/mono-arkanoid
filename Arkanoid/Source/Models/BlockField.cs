@@ -59,6 +59,28 @@ namespace Arkanoid.Source.Models
             throw new NotImplementedException();
         }
 
+        public bool CollisionCheck(Ball ball)
+        {
+            var ballRectangle = new Rectangle(
+                (int)ball.Position.X,
+                (int)ball.Position.Y,
+                ball.Width,
+                ball.Height
+            );
+
+            for (int i = 0; i < blocks.Count; i++)
+            {
+                //if (HasIntersection(ballRectangle, blocks[i].Box))
+                if (blocks[i].Box.Intersects(ballRectangle))
+                {
+                    blocks.RemoveAt(i);
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
         private int ClarifyBlockAmount(int limit, int blockSize, float spacing)
         {
             int amount = limit / blockSize;
@@ -79,16 +101,11 @@ namespace Arkanoid.Source.Models
             {
                 for (int j = 0; j < xamount; j++)
                 {
-                    /*block.Position = new Vector2(
-                        _blocksDrawOffset.X + j * (block.Width + BlockSpacing.X),
-                        _blocksDrawOffset.Y + i * (block.Height + BlockSpacing.Y)
-                    );*/
                     var position = new Vector2(
                         _blocksDrawOffset.X + j * (block.Width + BlockSpacing.X),
                         _blocksDrawOffset.Y + i * (block.Height + BlockSpacing.Y)
                     );
 
-                    //blocks.Add(block);
                     blocks.Add(new Block(blockTexture, position));
                 }
             }
@@ -97,6 +114,47 @@ namespace Arkanoid.Source.Models
         private int CalculateOffset(int amount, int blockSize, float spacing, int limitSize)
         {
             return (limitSize - (amount * blockSize + (int)spacing * (amount - 1))) / 2; 
+        }
+
+        private bool HasIntersection(Rectangle rectangle1, Rectangle rectangle2)
+        {
+            return
+                IsPointPreceedsBorders(
+                    new Point(
+                        rectangle1.X,
+                        rectangle1.Y
+                    ),
+                    rectangle2
+                ) ||
+                IsPointPreceedsBorders(
+                    new Point(
+                        rectangle1.X + rectangle1.Width,
+                        rectangle1.Y
+                    ),
+                    rectangle2
+                ) ||
+                IsPointPreceedsBorders(
+                    new Point(
+                        rectangle1.X,
+                        rectangle1.Y + rectangle1.Height
+                    ),
+                    rectangle2
+                ) ||
+                IsPointPreceedsBorders(
+                    new Point(
+                        rectangle1.X + rectangle1.Width,
+                        rectangle1.Y + rectangle1.Height
+                    ),
+                    rectangle2
+                );
+        }
+
+        private bool IsPointPreceedsBorders(Point point, Rectangle rectangle)
+        {
+            return point.X > rectangle.X &&
+                point.X < rectangle.X + rectangle.Width &&
+                point.Y > rectangle.Y &&
+                point.Y < rectangle.Y + rectangle.Height;
         }
     }
 }

@@ -11,7 +11,6 @@ namespace Arkanoid.Source.Enums
         MainMenu = 0,
         ChooseDirection,
         Play,
-        End,
-        Highlights
+        End
     }
 }

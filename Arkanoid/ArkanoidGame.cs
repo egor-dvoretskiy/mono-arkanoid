@@ -115,6 +115,19 @@ namespace Arkanoid
                         gameField.Draw(spriteBatch);
                     }
                     break;
+                case GameState.End:
+                    {
+                        spriteBatch.DrawString(
+                            Content.Load<SpriteFont>("Fonts/ButtonFont"),
+                            "GAME OVER",
+                            new Vector2(
+                                Window.ClientBounds.Width / 2 - Content.Load<SpriteFont>("Fonts/ButtonFont").MeasureString("GAME OVER").X / 2,
+                                Window.ClientBounds.Height / 2 - Content.Load<SpriteFont>("Fonts/ButtonFont").MeasureString("GAME OVER").Y / 2
+                            ),
+                            Color.Red
+                        );
+                    }
+                    break;
                 default:
                     break;
             }

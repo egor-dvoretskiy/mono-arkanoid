@@ -76,7 +76,7 @@ namespace Arkanoid.Source.Models
             var xvelocity = Math.Abs(Height * cosx) * (DirectionAngle < 0 ? -1 : 1);
             var yvelocity = -Math.Abs(Height * cosy);
 
-            Velocity = new Vector2((float)xvelocity * 0.3f, (float)yvelocity * 0.3f);
+            Velocity = new Vector2((float)xvelocity * 0.4f, (float)yvelocity * 0.4f);
 
             Debug.Print($"x: {Velocity.X}, y: {Velocity.Y}");
 
@@ -135,7 +135,7 @@ namespace Arkanoid.Source.Models
         private bool IsBallHasCollisionWithRightBorder()
         {
             return Velocity.X > 0 &&
-                Position.X + Velocity.X > _outerBox.X + _outerBox.Width;
+                Position.X + Width + Velocity.X > _outerBox.X + _outerBox.Width;
         }
 
         private bool IsBallHasCollisionWithBottomBorder()

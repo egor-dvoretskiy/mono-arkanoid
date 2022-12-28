@@ -112,6 +112,12 @@ namespace Arkanoid.Source.Models
 
         public override void Update()
         {
+            if (_ball.IsBelowBottom)
+            {
+                _stateMachine.ProceedNextStage();
+                return;
+            }
+
             ProceedMouse();
             PaddleMove();
 
@@ -119,6 +125,7 @@ namespace Arkanoid.Source.Models
             _ball.DirectionAngle = _arrow.Angle;
             _ball.Update();
             _paddle.CollisionCheck(_ball);
+            _blockField.CollisionCheck(_ball);
         }
 
         private void ProceedMouse()
